@@ -1,0 +1,12 @@
+in my emotion detector function
+->first we are using api which has pre_train model and model train on emotions like(joy,anger,disgust,fear,sadness)
+->so api then give use all data plus score of emotion by itself.
+->formatted_response = json.loads(response.text)->loads data from response and then save it to varable
+-> if response.status_code == 200: 
+    ->here it start check from first value on emotion_prediction list which has emotion dict and get values of keys or save to 
+    varable
+then here Step 3: Find the dominant emotion
+ ->finds most big value or save its index to dominant_emotion_index and then we got our top emotion
+ ->elif response.status_code == 400:
+   ->here that for error if api fail to run
+->after that we set format of output

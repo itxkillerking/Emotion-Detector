@@ -1,0 +1,58 @@
+Flask → the main web framework (to make the app).
+render_template → used to send back an HTML page (like index.html).
+request → lets you read what the user typed in (their input text).
+emotion_detector → imports your function that actually does the analysis.
+->app = Flask("Emotion Detector")
+Makes a new Flask app.
+
+The name "Emotion Detector" is just a label
+@app.route("/emotionDetector")
+def emo_detector():
+This means: if someone visits the URL /emotionDetector, Flask will run this function emo_detector().
+response = emotion_detector(text_to_analyze)
+Calls your Watson API function from before.
+response will be a dictionary with the 5 emotions + dominant emotion.
+->return render_template(
+    'index.html',
+    text=text_to_analyze,
+    anger=response['anger'],
+    disgust=response['disgust'],
+    fear=response['fear'],
+    joy=response['joy'],
+    sadness=response['sadness'],
+    dominant_emotion=response['dominant_emotion']
+)
+send the user back index.html with all the emotion values filled in.
+
+Inside index.html, you can use placeholders like {{ anger }}, {{ joy }}, etc. to display results
+->@app.route("/")
+def render_index_page():
+    return render_template('index.html')
+This is the home page.
+When you first go to http://127.0.0.1:5000/, it just shows index.html.
+->text_to_analyze = request.args.get('textToAnalyze')
+1. request
+In Flask, request represents the incoming request from the browser.
+It contains everything the user sent:
+URL,
+query parameters (things after ? in the URL),
+form data,
+headers, etc.
+2. .args
+.args is a dictionary-like object that holds query parameters.
+Query parameters are the ?key=value part of the URL.
+Example URL:
+bash
+Copy code
+http://localhost:5000/emotionDetector?textToAnalyze=I+am+happy
+Here:
+textToAnalyze is the key
+I am happy is the value
+So in Python:
+python
+Copy code
+request.args["textToAnalyze"]  # gives "I am happy"
+3. .get('textToAnalyze')
+.get() safely looks for the key "textToAnalyze".
+If it exists → returns the value (e.g., "I am happy").
+If it doesn’t exist → returns None (instead of crashing).
